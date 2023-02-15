@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
+import TronWeb from "tronweb";
 
 // import abiUSDT from "./jsonABI/abiUSDT";
 // import abiContractTrade from "./jsonABI/abiContractTrade";
@@ -21,14 +22,16 @@ const App = () => {
   const [addressWithdrawTo, setAddressWithdrawTo] = useState();
   const [amountWithdraw, setAmountWithdraw] = useState(0);
 
-  const TronWeb = require("tronweb");
-  const HttpProvider = TronWeb.providers.HttpProvider;
-
-  const fullNode = new HttpProvider("https://api.trongrid.io");
-  const solidityNode = new HttpProvider("https://api.trongrid.io");
-  const eventServer = new HttpProvider("https://api.trongrid.io");
-
-  const tronweb = new TronWeb(fullNode, solidityNode, eventServer);
+  // const ServerNode = "https://api.trongrid.io";
+  // const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
+  // const fullNode = new HttpProvider(ServerNode); // Full node http endpoint
+  // const solidityNode = new HttpProvider(ServerNode); // Solidity node http endpoint
+  // const eventServer = ServerNode; // Contract events http endpoint
+  // const tronweb = new TronWeb(fullNode, solidityNode, eventServer);
+  const tronweb = new TronWeb({
+    fullNode: "https://api.trongrid.io",
+    solidityNode: "https://api.trongrid.io",
+  });
 
   const valueHex = (value) => {
     return "0x" + (value * 10 ** 6).toString(16);
@@ -40,8 +43,9 @@ const App = () => {
       tronweb.setAddress(address);
       const { abi } = await tronweb.trx.getContract(address);
       // console.log(JSON.stringify(abi));
+      tronweb.contract(abi.entrys, address);
 
-      let contractUSDT = tronweb.contract(abi.entrys, address);
+      let contractUSDT = await tronweb.contract().at(address);
 
       // console.log(contractUSDT);
       let resBalance = await contractUSDT.methods
