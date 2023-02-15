@@ -22,16 +22,13 @@ const App = () => {
   const [addressWithdrawTo, setAddressWithdrawTo] = useState();
   const [amountWithdraw, setAmountWithdraw] = useState(0);
 
-  // const ServerNode = "https://api.trongrid.io";
-  // const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
-  // const fullNode = new HttpProvider(ServerNode); // Full node http endpoint
-  // const solidityNode = new HttpProvider(ServerNode); // Solidity node http endpoint
-  // const eventServer = ServerNode; // Contract events http endpoint
-  // const tronweb = new TronWeb(fullNode, solidityNode, eventServer);
-  const tronweb = new TronWeb({
-    fullNode: "https://api.trongrid.io",
-    solidityNode: "https://api.trongrid.io",
-  });
+  const ServerNode = "https://api.trongrid.io";
+  const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
+  const fullNode = new HttpProvider(ServerNode); // Full node http endpoint
+  const solidityNode = new HttpProvider(ServerNode); // Solidity node http endpoint
+  const eventServer = ServerNode; // Contract events http endpoint
+  const tronweb = new TronWeb(fullNode, solidityNode, eventServer, "");
+
 
   const valueHex = (value) => {
     return "0x" + (value * 10 ** 6).toString(16);
